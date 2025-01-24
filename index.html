@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Футбол 1 на 1</title>
+  <link type="text/css" href="style.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="welcome">
+        <p class="time-period">время игры:
+            <input id="time1" name="time-period" type="radio" value="60c" checked>
+            <label class="form-check-label" for="time1">60c</label>
+            <input id='time2' name="time-period" type="radio" value="90c">
+            <label class="form-check-label" for="time2">90c</label>
+            <input id='time3' name='time-period' type="radio" value="120c">
+            <label class="form-check-label" for="time3">120c</label>
+        </p>
+        <p>режим игры:
+            <input id='2player' name="player-mode" type="radio" value="30c" checked>
+            <label class="form-check-label" for="2player">2 игрока</label>
+            <input id="bot" name="player-mode" type="radio" value="30c" disabled>
+            <label class="form-check-label" for="bot">с ботом</label>
+
+        </p>
+        <button class="btn">Создать игру</button>
+    </div>
+    <div class="hide score-board">0 : 0</div>
+<!--    <div class="scored-ball">Gooooal...</div>-->
+    <div class="hide settings"><i class="fa-solid fa-gear fa-spin fa-xl"></i></div>
+    <div class="hide settings-menu">
+        <p>Управление</p>
+        <p class="logout"><i class="fa-solid fa-right-from-bracket"></i> Выйти</p>
+    </div>
+    <canvas class="hide" id="football-field" width="1400" height="700"></canvas>
+    <div class="hide play-time"></div>
+
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>-->
+    <script src="script.js"></script>
+    <script>
+    </script>
+</body>
+</html>

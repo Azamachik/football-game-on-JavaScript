@@ -1,0 +1,107 @@
+body {
+    background: #00CC66;
+    overflow: hidden;
+}
+.score-board, .play-time {
+    color: white;
+    position: fixed;
+    background-color: black;
+    width: 40px;
+    font-size: 20px;
+    text-align: center;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.5);
+    transition: width 1s ease-in-out, font-size 1s ease;
+}
+
+.score-board:hover {
+    width: 60px;
+    font-size: 20px;
+}
+.scored-ball {
+    color: black;
+    font-size: 22px;
+    position: absolute;
+}
+.daily-mode {
+    left: 95%;
+    top: 10px;
+    position: absolute;
+    color: white;
+}
+
+.settings {
+    left: 98%;
+    top: 17px;
+    position: absolute;
+    color: white;
+}
+
+.settings-menu {
+    left: 92%;
+    top: 40px;
+    position: absolute;
+    border-radius: 10px;
+    width: 110px;
+    height: auto;
+    background: white;
+    text-align: center;
+}
+.hide {
+    display: none;
+}
+.settings-menu p:hover {
+    width: 110px;
+    background: green;
+    color: white;
+    border-radius: 8px;
+}
+.welcome {
+    position: absolute;
+    width: 300px;
+    height: 150px;
+    padding: 10px;
+    background: white;
+    border-radius: 10px;
+    text-align: center;
+}
+.welcome .btn {
+    background: green;
+    color: white;
+    border-radius: 6px;
+    position: absolute;
+    width: 200px;
+    left: 18%;
+    top: 80%;
+    border-color: green;
+    box-shadow: 0 0 20px #eee;
+
+}
+input[type='radio']:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -2px;
+    left: -1px;
+    position: relative;
+    background-color: #d1d3d1;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid white;
+}
+
+input[type='radio']:checked:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -2px;
+    left: -1px;
+    position: relative;
+    background-color: green;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid white;
+}
