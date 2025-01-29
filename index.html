@@ -8,6 +8,7 @@
       crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
+    <h1 class="game-name">Игра в футбол</h1>
     <div class="welcome">
         <p class="time-period">время игры:
             <input id="time1" name="time-period" type="radio" value="60c" checked>
@@ -26,8 +27,7 @@
         </p>
         <button class="btn">Создать игру</button>
     </div>
-    <div class="hide score-board">0 : 0</div>
-<!--    <div class="scored-ball">Gooooal...</div>-->
+    <div class="hide score-board">9 : 0</div>
     <div class="hide settings"><i class="fa-solid fa-gear fa-spin fa-xl"></i></div>
     <div class="hide settings-menu">
         <p>Управление</p>
@@ -35,10 +35,6 @@
     </div>
     <canvas class="hide" id="football-field" width="1400" height="700"></canvas>
     <div class="hide play-time"></div>
-
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>-->
     <script src="script.js"></script>
-    <script>
-    </script>
 </body>
 </html>
