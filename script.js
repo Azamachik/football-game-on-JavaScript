@@ -1,25 +1,40 @@
 const canvas = document.getElementById("football-field");
 const context = canvas.getContext("2d");
 
-let scorePlayer1 = 0, scorePlayer2 = 0;
+let scorePlayer1 = 9, scorePlayer2 = 0;
 let scoreBoard = document.querySelector('.score-board');
 let scoredBall = document.querySelector('.scored-ball');
 let playTime = document.querySelector('.play-time');
-playTime.style.left = document.documentElement.clientWidth / 2  - scoreBoard.offsetWidth / 2  - 35 + "px";
-playTime.style.top = document.documentElement.clientHeight - 50 + "px";
-scoreBoard.style.left = document.documentElement.clientWidth / 2  - scoreBoard.offsetWidth / 2  - 35 + "px";
-scoreBoard.style.top = 5 + "px";
-let topBorder = 50, bottomBorder = 650, rightBorder = 1300, leftBorder = 200;
+const topBorder = 50, bottomBorder = 650, rightBorder = 1300, leftBorder = 200;
 let timer = 60;
 let set = document.querySelector('.settings');
 let setMenu = document.querySelector('.settings-menu');
 let logout = document.querySelector('.logout');
+let gameName = document.querySelector('.game-name')
 let dailyMode = document.querySelector('.daily-mode');
 let createBtn = document.querySelector('.btn');
 let windowWelcome = document.querySelector('.welcome');
 let init = requestAnimationFrame(startGame);
 let timePeriodChosen = document.querySelector('.time-period')
 let wasLoggedOut = false;
+
+function startGame() {
+    renderFootballField();
+    renderBall();
+    renderPlayers();
+
+    movePlayer();
+    playersKeyboards();
+    moveBall();
+
+    playerBorder();
+    ballBorder();
+    collisionBallPlayer();
+    collisionPlayers();
+
+    changeGameScore();
+    requestAnimationFrame(startGame);
+}
 
 window.requestAnimationFrame =
   window.requestAnimationFrame ||
@@ -33,9 +48,13 @@ timePeriodChosen.onclick = function(event) {
     timer = timer.slice(0, timer.length - 1);
 }
 
-function welcome() {
+function changeElementsPosition() {
     windowWelcome.style.left = document.documentElement.clientWidth / 2  - windowWelcome.offsetWidth / 2 + 'px';
     windowWelcome.style.top = document.documentElement.clientHeight / 2  - windowWelcome.offsetHeight / 2 + 'px';
+    playTime.style.left = document.documentElement.clientWidth / 2  - scoreBoard.offsetWidth / 2  - 45 + "px";
+    playTime.style.top = document.documentElement.clientHeight - 50 + "px";
+    scoreBoard.style.left = document.documentElement.clientWidth / 2  - scoreBoard.offsetWidth / 2  - 45 + "px";
+    scoreBoard.style.top = 5 + "px";
 }
 
 createBtn.addEventListener('click', () => {
@@ -45,12 +64,13 @@ createBtn.addEventListener('click', () => {
     playTime.classList.toggle('hide');
     canvas.classList.toggle('hide');
     scorePlayer1 = 0, scorePlayer2 = 0;
+    gameName.classList.toggle('hide');
     wasLoggedOut = false;
     gameTime();
     reset();
 });
 
-document.addEventListener('DOMContentLoaded', welcome);
+document.addEventListener('DOMContentLoaded', changeElementsPosition);
 
 set.addEventListener('click', () => {setMenu.classList.toggle('hide');});
 
@@ -60,36 +80,46 @@ logout.addEventListener('click', () => {
     set.classList.toggle('hide');
     setMenu.classList.toggle('hide');
     playTime.classList.toggle('hide');
+    gameName.classList.toggle('hide');
     scoreBoard.classList.toggle('hide');
     wasLoggedOut = true;
     timer = 60;
 });
 
-function Player(x, y) {
-    this.x = x;
-    this.y = y;
-    this.score = 0;
-    this.acceleration = 0.5;
-    this.deceleration = 0.5;
-    this.xSpeed = 0;
-    this.ySpeed = 0;
-    this.maxSpeed = 4;
-    this.size = 35;
-    this.up = false;
-    this.down = false;
-    this.right = false;
-    this.left = false;
+class FieldObject {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.acceleration = 0.5;
+        this.deceleration = 0.5;
+        this.xSpeed = 0;
+        this.ySpeed = 0;
+        this.size = 20;
+    }
 }
 
-function Ball(x, y) {
-    this.x = x;
-    this.y = y;
-    this.acceleration = 0.5;
-    this.deceleration = 0.035;
-    this.xSpeed = 0;
-    this.ySpeed = 0;
-    this.size = 20;
-    this.shoot = false;
+class Player extends FieldObject {
+    constructor(x, y) {
+        super(x, y);
+        this.score = 0;
+        this.acceleration = 0.5;
+        this.deceleration = 0.5;
+        this.maxSpeed = 4;
+        this.size = 35;
+        this.up = false;
+        this.down = false;
+        this.right = false;
+        this.left = false;
+    }
+}
+
+class Ball extends FieldObject {
+    constructor(x, y) {
+        super(x, y);
+        this.acceleration = 0.5;
+        this.deceleration = 0.035;
+        this.size = 20;
+    }
 }
 
 let players = [new Player(650, 350-17.5), new Player(750 + 100 - 17.5, 350-17.5)];
@@ -110,31 +140,6 @@ function gameTime() {
     else {
         wasLoggedOut = false;
     }
-}
-
-//function wait(ms) {
-//  let start = new Date().getTime();
-//  let end = start;
-//  while (end < start + ms) {
-//    end = new Date().getTime();
-//  }
-//}
-
-function startGame() {
-    renderFootballField();
-    renderBall();
-    renderPlayers();
-
-    movePlayer();
-    playersKeyboards();
-    moveBall();
-
-    playerBorder();
-    ballBorder();
-    collisionBallPlayer();
-
-    changeGameScore();
-    requestAnimationFrame(startGame);
 }
 
 function playersKeyboards() {
@@ -303,16 +308,30 @@ function collide(player_copy, ball_copy) {
 
 function collisionBallPlayer() {
     for (let player of players) {
-        const distanceBallPlayer = getDistance(player.x, player.y, ball.x, ball.y) - player.size - ball.size;
+        let distanceBallPlayer = getDistance(player.x, player.y, ball.x, ball.y);
+//        if ((player.x + player.size <= ball.x) || (player.y + player.size <= ball.y)) {
+//            distanceBallPlayer -= player.size + 5;
+//        }
+//        // Если игрок находится справа или снизу от мяча
+//        else {
+//            distanceBallPlayer -= ball.size;
+//        }
+        if (player.x + player.size < ball.x && player.y <= (ball.y + ball.size) && (player.y + player.size) >= ball.y) distanceBallPlayer -= player.size + 5;
+        else if (player.y + player.size > ball.y) distanceBallPlayer -= ball.size;
         if (distanceBallPlayer < 0) collide(player, ball);
     }
+}
 
+function collisionPlayers() {
+    const distancePlayers = getDistance(players[0].x, players[0].y, players[1].x, players[1].y) - players[1].size;
+    if (distancePlayers < 0) collide(players[0], players[1]);
 }
 
 function reset() {
     players = [new Player(650, 350-17.5), new Player(750 + 100 - 17.5, 350-17.5)];
     ball = new Ball(740, 340);
 }
+
 document.addEventListener('keydown', function(event) {
     switch(event.code) {
         case "KeyW":
