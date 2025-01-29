@@ -6,29 +6,17 @@ body {
     color: white;
     position: fixed;
     background-color: black;
-    width: 40px;
+    width: 60px;
     font-size: 20px;
     text-align: center;
     padding: 10px;
     border-radius: 8px;
     box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.5);
-    transition: width 1s ease-in-out, font-size 1s ease;
+    transition: width 1s ease-in-out;
 }
 
 .score-board:hover {
-    width: 60px;
-    font-size: 20px;
-}
-.scored-ball {
-    color: black;
-    font-size: 22px;
-    position: absolute;
-}
-.daily-mode {
-    left: 95%;
-    top: 10px;
-    position: absolute;
-    color: white;
+    width: 65px;
 }
 
 .settings {
@@ -39,6 +27,7 @@ body {
 }
 
 .settings-menu {
+    font-family: comic sans ms;
     left: 92%;
     top: 40px;
     position: absolute;
@@ -48,9 +37,11 @@ body {
     background: white;
     text-align: center;
 }
+
 .hide {
     display: none;
 }
+
 .settings-menu p:hover {
     width: 110px;
     background: green;
@@ -58,6 +49,7 @@ body {
     border-radius: 8px;
 }
 .welcome {
+    font-family: comic sans ms;
     position: absolute;
     width: 300px;
     height: 150px;
@@ -104,4 +96,11 @@ input[type='radio']:checked:after {
     display: inline-block;
     visibility: visible;
     border: 2px solid white;
+}
+
+.game-name {
+    font-family: comic sans ms;
+    text-align:center;
+    margin-top: 200px;
+    color: white;
 }
